@@ -1,5 +1,63 @@
 # Release Notes
 
+## v0.2.2 — Docker Containerization
+
+### Summary
+Containerized the application using a multi-stage Docker build with nginx for production-grade static file serving. The local Vite dev server is replaced by an nginx container serving the built SPA on port 8080.
+
+### Changes
+- **Dockerfile** — Multi-stage build: `node:20-alpine` for building, `nginx:alpine` for serving. Produces a minimal production image (~25MB).
+- **docker-compose.yml** — Single-service compose file mapping host port 8080 to container port 80.
+- **nginx.conf** — Custom nginx config with SPA route fallback (`try_files` to `index.html`), gzip compression, and static asset caching.
+- **.dockerignore** — Excludes `node_modules`, `dist`, `.git`, and other non-essential files from the build context.
+
+### Architecture Impact
+- No application code changes — infrastructure-only addition
+- No new npm dependencies
+- New files at project root: `Dockerfile`, `docker-compose.yml`, `nginx.conf`, `.dockerignore`
+
+### Risk Level
+**Low** — Infrastructure-only change. No application code modified. The app runs identically in the container as it does locally. Backward compatible — `npm run dev` still works for local development.
+
+### Migration Steps
+- Run `docker compose up -d --build` to build and start the container
+- App is accessible at `http://localhost:8080`
+- To stop: `docker compose down`
+
+---
+
+## v0.2.1 — Cache-Related Module Keywords (Cookie, Local Storage, Session Storage)
+
+### Summary
+Added keyword mappings for `cookie`, `local storage`, `localstorage`, and `session storage` to the architecture engine so that when developers mention these client-side storage mechanisms in requirements text, the engine generates appropriate client + cache components.
+
+### Changes
+- **architectureEngine.ts** — Added 4 new keyword entries to `KEYWORD_MAP`:
+  - `cookie` → `['client', 'cache']` (Cookie Storage)
+  - `local storage` → `['client', 'cache']` (Local Storage)
+  - `localstorage` → `['client', 'cache']` (Local Storage)
+  - `session storage` → `['client', 'cache']` (Session Storage)
+- **architectureEngine.test.ts** — Added 7 new tests covering:
+  - Cache keyword parsing (existing, verified)
+  - Cookie keyword parsing with client + cache components
+  - Local storage keyword parsing (two-word and single-word variants)
+  - Session storage keyword parsing
+  - Architecture generation with all three cache-related keywords combined
+  - Connection generation between cache-related component groups
+
+### Architecture Impact
+- No new modules or dependencies
+- Extended existing `KEYWORD_MAP` in `architectureEngine.ts` with 4 new entries
+- Test count: 149 → 156
+
+### Risk Level
+**Low** — Additive change to keyword map only. No existing behavior modified. Backward compatible.
+
+### Migration Steps
+None — additive keyword support only.
+
+---
+
 ## v0.2.0-ui-tests — Comprehensive UI Test Coverage for All Components
 
 ### Summary

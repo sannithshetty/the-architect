@@ -95,6 +95,13 @@ The Architect is a React + TypeScript UI application that generates interactive 
 - **Data Flow**: Keyboard events → store actions (undo/redo/remove/deselect)
 - **Deployment**: Client-side (browser)
 
+### 16. Docker Infrastructure (v0.2.2)
+- **Responsibility**: Containerizes the application for production deployment using multi-stage Docker build with nginx
+- **Dependencies**: Docker, nginx:alpine, node:20-alpine (build stage only)
+- **Data Flow**: Vite build output → nginx static file server → browser client
+- **Deployment**: Docker container (nginx serving static files on port 80, mapped to host port 8080)
+- **File Scope Note**: Docker files (`Dockerfile`, `docker-compose.yml`, `nginx.conf`, `.dockerignore`) must reside at the project root per Docker convention — they cannot be placed inside `src/`
+
 ## Architecture Diagram
 
 ```

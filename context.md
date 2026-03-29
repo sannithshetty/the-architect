@@ -26,6 +26,9 @@ A registry-based plugin system allows extending the component palette with new n
 ### localStorage Persistence (v0.2.0)
 Workspace state (graphs and active graph ID) persists via Zustand's `persist` middleware using localStorage. This provides zero-config persistence without a backend. The `partialize` option excludes transient state (selectedComponentId) from persistence.
 
+### Docker Containerization (v0.2.2)
+Added Docker support using a multi-stage build (node:20-alpine → nginx:alpine). The nginx container serves the Vite-built static files on port 80, mapped to host port 8080 via docker-compose. This aligns with the "client-side only" design — no Node.js runtime needed in production. nginx handles SPA routing via `try_files` fallback to `index.html`.
+
 ## Constraints
 - No API keys or credentials needed (client-side only)
 - Browser-based; no server-side rendering

@@ -53,6 +53,69 @@ describe('parseRequirements', () => {
     const dbMatches = result.filter((r) => r.keyword === 'database')
     expect(dbMatches).toHaveLength(1)
   })
+
+  describe('cache-related keywords', () => {
+    it('parses cache keyword and includes cache component', () => {
+      const result = parseRequirements('add a cache layer')
+      const cacheMatch = result.find((r) => r.keyword === 'cache')
+      expect(cacheMatch).toBeDefined()
+      expect(cacheMatch!.components).toContain('cache')
+      expect(cacheMatch!.label).toBe('Cache')
+    })
+
+    it('parses cookie keyword and includes client and cache components', () => {
+      const result = parseRequirements('use cookie for session tracking')
+      const cookieMatch = result.find((r) => r.keyword === 'cookie')
+      expect(cookieMatch).toBeDefined()
+      expect(cookieMatch!.components).toContain('client')
+      expect(cookieMatch!.components).toContain('cache')
+      expect(cookieMatch!.label).toBe('Cookie Storage')
+    })
+
+    it('parses local storage keyword and includes client and cache components', () => {
+      const result = parseRequirements('persist data in local storage')
+      const lsMatch = result.find((r) => r.keyword === 'local storage')
+      expect(lsMatch).toBeDefined()
+      expect(lsMatch!.components).toContain('client')
+      expect(lsMatch!.components).toContain('cache')
+      expect(lsMatch!.label).toBe('Local Storage')
+    })
+
+    it('parses localstorage as single word', () => {
+      const result = parseRequirements('use localstorage for preferences')
+      const lsMatch = result.find((r) => r.keyword === 'localstorage')
+      expect(lsMatch).toBeDefined()
+      expect(lsMatch!.components).toContain('client')
+      expect(lsMatch!.components).toContain('cache')
+    })
+
+    it('parses session storage keyword', () => {
+      const result = parseRequirements('store temp data in session storage')
+      const ssMatch = result.find((r) => r.keyword === 'session storage')
+      expect(ssMatch).toBeDefined()
+      expect(ssMatch!.components).toContain('client')
+      expect(ssMatch!.components).toContain('cache')
+      expect(ssMatch!.label).toBe('Session Storage')
+    })
+
+    it('generates architecture with cache, cookie, and local storage together', () => {
+      const reqs = parseRequirements('app with cache, cookie, and local storage')
+      const graph = generateArchitecture(reqs)
+
+      // Should have components for all three
+      expect(graph.components.some((c) => c.type === 'cache')).toBe(true)
+      expect(graph.components.some((c) => c.type === 'client')).toBe(true)
+      // At least cache (1) + cookie (client+cache) + local storage (client+cache) = 5 components
+      expect(graph.components.length).toBeGreaterThanOrEqual(5)
+    })
+
+    it('generates connections between cache-related components', () => {
+      const reqs = parseRequirements('cookie with local storage')
+      const graph = generateArchitecture(reqs)
+      // Each group (cookie, local storage) has 2 components with internal connections
+      expect(graph.connections.length).toBeGreaterThanOrEqual(2)
+    })
+  })
 })
 
 describe('generateArchitecture', () => {

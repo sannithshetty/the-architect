@@ -105,3 +105,19 @@
 - [x] 6. Write tests for useKeyboardShortcuts hook (12 tests: undo/redo/delete/escape, input exclusion, cleanup)
 - [x] 7. Run all tests and verify pass (149/149 pass, 17 test files)
 - [x] 8. Update RELEASE.md with test coverage entry (v0.2.0-ui-tests)
+
+## Cache-Related Modules — Cookie & Local Storage Keywords
+
+- [ ] 1. Add `cookie` and `local storage` keyword mappings to architectureEngine.ts KEYWORD_MAP
+- [ ] 2. Write tests for cache, cookie, and local storage keyword parsing and architecture generation
+- [ ] 3. Run all tests and verify build passes
+- [ ] 4. Update RELEASE.md with cache-related modules entry
+- [ ] 5. Update docs/architecture/components.md if needed
+
+## Docker Containerization
+
+- [x] 1. Kill locally running Vite dev server
+- [x] 2. Build and bring up the app in Docker (`docker compose up --build -d`)
+- [x] 3. Verify app is running and accessible at http://localhost:8080 (HTTP 200)
+- [x] 4. Run unit tests (156/156 pass) and verify build compiles cleanly
+- [x] 5. Update RELEASE.md with v0.2.2 Docker entry

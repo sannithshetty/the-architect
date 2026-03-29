@@ -35,9 +35,13 @@ const KEYWORD_MAP: Record<string, { components: ComponentType[]; label: string }
   'notification': { components: ['queue', 'service'], label: 'Notifications' },
   'real-time': { components: ['queue', 'service'], label: 'Real-time' },
 
-  // Performance
+  // Performance & Client-Side Storage
   'cache': { components: ['cache'], label: 'Cache' },
   'caching': { components: ['cache'], label: 'Caching Layer' },
+  'cookie': { components: ['client', 'cache'], label: 'Cookie Storage' },
+  'local storage': { components: ['client', 'cache'], label: 'Local Storage' },
+  'localstorage': { components: ['client', 'cache'], label: 'Local Storage' },
+  'session storage': { components: ['client', 'cache'], label: 'Session Storage' },
   'performance': { components: ['cache', 'loadbalancer'], label: 'Performance' },
   'scalab': { components: ['loadbalancer', 'cache'], label: 'Scalability' },
 

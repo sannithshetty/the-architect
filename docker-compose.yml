@@ -1,0 +1,7 @@
+services:
+  the-architect:
+    build: .
+    container_name: the-architect
+    ports:
+      - "8080:80"
+    restart: unless-stopped
